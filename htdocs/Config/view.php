@@ -2,12 +2,17 @@
 
 class View
 {
-	private $__layout = '../Layout/';
-	private $__element = '../Element/';
+	private $__layout = '/View/Layout/';
+	private $__element = '/View/Element/';
 	
 	public function getLayout($file)
 	{
-		return $this->__layout . $file . '.php';
+		return $_SERVER['DOCUMENT_ROOT'] . $this->__layout . $file . '.php';
+	}
+
+	public function getElement($file)
+	{
+		return $_SERVER['DOCUMENT_ROOT'] . $this->__element . $file . '.php';
 	}
 
 	public function setScript($value)
