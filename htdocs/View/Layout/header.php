@@ -8,7 +8,9 @@
 	<title><?php echo $loader->SiteSetting->getTitle(); ?></title>
 
 	<?php echo $loader->View->setCss('bootstrap.min.css'); ?>
+	<?php echo $loader->View->setCss('bootstrap-theme.min.css'); ?>
+	<?php echo $loader->View->setCss('theme.css'); ?>
 	<?php echo $loader->View->setScript('jquery-2.2.4.min.js'); ?>
 	<?php echo $loader->View->setScript('bootstrap.min.js'); ?>
 </head>
-<body>
+
