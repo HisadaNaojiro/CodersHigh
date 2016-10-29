@@ -12,10 +12,10 @@ class SiteSetting
 	public function setMetaData($params)
 	{
 
-		$this->__title = $params["title"];
-		$this->__keywords = $params["keywords"];
-		$this->__description = $params["description"];
-		$this->__h1 = $params["h1"];
+		$this->__title = isset($params["title"])? $params["title"] : '';
+		$this->__keywords = isset($params["keywords"])? $params["keywords"] : '';
+		$this->__description = isset($params["description"])? $params["description"] : '';
+		$this->__h1 = isset($params["h1"])? $params["h1"] : '';
 	}
 
 	public function getTitle()
