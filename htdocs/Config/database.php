@@ -7,7 +7,7 @@ class Database
 
 	public $development = [
 		'host'		=> 'localhost',
-		'database'	=> 'codershigh',
+		'database'	=> 'mydb',
 		'username'	=>	'root',
 		'password'	=>	'root',
 		'charset'	=>	'utf8'
@@ -55,6 +55,26 @@ class Database
 			exit;
 		}
 
+	}
+
+	public function startTransaction()
+	{
+		return $this->pdo->beginTransaction();
+	}
+
+	public function commit()
+	{
+		return $this->pdo->commit();
+	}
+
+	public function rollback()
+	{
+		return $this->pdo->rollback();
+	}
+
+	public function lastInsertId()
+	{
+		return $this->pdo->lastInsertId('id');
 	}
 
 	private function setEnvironment()
