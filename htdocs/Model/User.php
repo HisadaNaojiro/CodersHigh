@@ -38,4 +38,19 @@ class User extends AppModel
 
 		return $this->insert($sql,$array);
 	}
+
+	public function authenticate()
+	{
+		$params = $this->__params;
+		$sql = "SELECT * FROM users WHERE email = ?";
+		$array = [$params['User']['email']];
+		$UserArray = $this->fetch($sql,$array);
+
+		if(!$UserArray && password_verify($params['User']['password'], $UserArray['password'])){
+			$this->Validate = ['errors' => ['conbination' => 'メールアドレスかパスワードが間違っています']];
+			return $this->Validate;
+		}
+
+		return $UserArray;
+	}
 }
