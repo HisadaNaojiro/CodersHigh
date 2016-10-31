@@ -26,6 +26,13 @@ class User extends AppModel
 		return true;
 	}
 
+	public function getUserArrayById($id)
+	{
+		$sql = "SELECT * FROM users WHERE id = ?";
+		$array = [$id];
+		return $this->fetch($sql,$array);
+	}
+
 	public function save($params)
 	{
 		$sql = "INSERT INTO users(name,email,password,created,modified) VALUES (?,?,?,?,?)";
