@@ -28,14 +28,14 @@ class User extends AppModel
 
 	public function getUserArrayById($id)
 	{
-		$sql = "SELECT * FROM users WHERE id = ?";
+		$sql = "SELECT * FROM user WHERE id = ?";
 		$array = [$id];
 		return $this->fetch($sql,$array);
 	}
 
 	public function save($params)
 	{
-		$sql = "INSERT INTO users(name,email,password,created,modified) VALUES (?,?,?,?,?)";
+		$sql = "INSERT INTO user(name,email,password,created,modified) VALUES (?,?,?,?,?)";
 
 		$array = [
 			$params['User']['name'],$params['User']['email'],
@@ -49,7 +49,7 @@ class User extends AppModel
 	public function authenticate()
 	{
 		$params = $this->__params;
-		$sql = "SELECT * FROM users WHERE email = ?";
+		$sql = "SELECT * FROM user WHERE email = ?";
 		$array = [$params['User']['email']];
 		$UserArray = $this->fetch($sql,$array);
 
