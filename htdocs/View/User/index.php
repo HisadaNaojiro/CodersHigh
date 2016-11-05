@@ -2,12 +2,15 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/Config/loader.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/Model/User.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/Model/Micropost.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/Model/Favorite.php');
+
 	$metaData = [
 		'title' => 'Home'
 	];
 	$loader = new Loader;
 	$User = new User;
 	$Micropost = new Micropost;
+	$Favorite = new Favorite;
 	$loader->SiteSetting->setMetaData($metaData);
 	$message =!empty($loader->Session->get('message'))?$loader->Session->get('message') : '';
 	$loader->Session->remove('message');
@@ -22,7 +25,10 @@
 	
 ?>
 <body>
-<div id="js-micropost-provider" data-micropost-post-url="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/View/Ajax/post_micropost.php';?>"></div>
+<div id="js-micropost-provider" 
+	data-micropost-post-url="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/View/Ajax/post_micropost.php';?>" 
+	data-favorite-post-url="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/View/Ajax/post_favorite.php';?>"
+></div>
 <?php 
 	echo $loader->View->setCss('base.css');
 	echo $loader->View->setCss('index.css'); 
@@ -69,12 +75,30 @@ $(function(){
 			'data'		: data,
 			'dataType'	: 'json'
 		}).done(function(data){
+
 			$(data['text']).prependTo('#ovarall-micropost-space');
-		}).fail(function(xhr, textStatus, errorThrown){
-			alert('追加に失敗しました。');
-			console.log(xhr);
-			console.log(textStatus);
-			console.log(errorThrown);
+		}).fail(function(){
+			alert('追加に失敗しました');
+		});
+	});
+
+	$('.micropost-favorite-button,.delete-micropost-favorite-button').on('click',function(e){
+		$event = $(e.target);
+		var value = $event.parents('.each-micropost-space').data('micropostId'),
+			type = $event.parent().data('type');
+		var data = {"data[Favorite][micropost_id]" : value,"type" : type};
+		$.ajax({
+			'type'		: 'POST',
+			'url'		: $dataMicropostProvider.data('favoritePostUrl'),
+			'data' 		: data,
+			'dataType'	:'json'
+		}).done(function(data){
+			$parents = $event.parents('.micropost-favorite-space');
+			$parents.children('.micropost-favorite-button').toggle();
+			$parents.children('.delete-micropost-favorite-button').toggle();
+			$parents.children('.favorite-count').text(data);
+		}).fail(function(){
+			alert('いいねに失敗しました');
 		});
 	});
 
@@ -85,6 +109,13 @@ $(function(){
 		$jsMicropostFormButton.toggle();
 	}
 
+	function toggleFavoriteButton()
+	{
+		$('.micropost-favorite-button').toggle();
+		$('.delete-micropost-favorite-button').toggle();
+
+	}
+
 	function hasMicropostFormValue ($val)
 	{
 		return ($val !== '')? true : false;
@@ -93,8 +124,10 @@ $(function(){
 	$('#ovarall-micropost-space').jscroll({
 		nextSelector : '.test-scroll a',
 		contentSelector : '.each-paginate-micropost-space',
-		loadingHtml: '<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>'
+		loadingHtml: '<div id="loading-data" class="text-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></div>'
 	});
+
+	$('[data-toggle="tooltip"]').tooltip();
 	
 });
 	
@@ -135,7 +168,7 @@ $(function(){
 				<div id="ovarall-micropost-space">
 					<div class="each-paginate-micropost-space">
 						<?php foreach($MicropostCollection as $MicropostArray): ?>
-							<div id="micropost_id-<?php echo $MicropostArray['id']?>" class="each-micropost-space">
+							<div data-micropost-id="<?php echo $MicropostArray['id']?>" class="each-micropost-space">
 								<div class="micropost-user-info">
 									<p><span>画像</span><?php echo $UserArray['name']; ?></p>
 								</div>
@@ -145,7 +178,26 @@ $(function(){
 									</p>
 								</div>
 								<div class="micropost-content-button">
-									<span>いいね</span><span>リツイート</span><span>返信</span>
+									<div class="micropost-replay-space">
+										<button  data-toggle="tooltip" title="返信" class="micropost-replay-button"><i class="fa fa-reply" aria-hidden="true"></i></button>
+									</div>
+									<div class="micropost-retweet-space">
+										<button data-toggle="tooltip" title="リツイート"  class="micropost-retweet-button"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+									</div>
+									<div class="micropost-favorite-space">
+										<?php $checkFavorite = $Favorite->isFavoriteByUserId($MicropostArray['id'],$UserArray['id']); ?>
+										<button data-toggle="tooltip" data-type="add" title="いいね" class="micropost-favorite-button" 
+											<?php if($checkFavorite){ echo 'style ="display: none;"';} ?>
+										>
+											<i class="fa fa-heart" aria-hidden="true"></i>
+										</button>
+										<button data-toggle="tooltip" data-type="delete" title="いいね取り消し" class="delete-micropost-favorite-button" 
+											<?php if(!$checkFavorite){ echo 'style ="display: none;"';} ?>
+										>
+											<i class="fa fa-heart" aria-hidden="true"></i>
+										</button>
+										<span class="favorite-count"><?php echo $Favorite->getCountByMicropostId($MicropostArray['id']);?></span>
+									</div>
 								</div>
 								
 							</div>
