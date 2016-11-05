@@ -27,7 +27,7 @@ if(!$MicropostArray = $Micropost->getArrayById($id)){
 
 
 $array=[ 'text' =>  
-'<div class="each-micropost-space" id="micropost_id-' . $MicropostArray['id'] . '">
+'<div class="each-micropost-space" data-micropost-id="' . $MicropostArray['id'] . '">
 	<div class="micropost-user-info">
 		<p><span>画像</span>'. $UserArray['name'] .'</p>
 	</div>
@@ -35,7 +35,15 @@ $array=[ 'text' =>
 		<p>' . $MicropostArray['content'].'</p>
 	</div>
 	<div class="micropost-content-button">
-		<span>いいね</span><span>リツイート</span><span>返信</span>
+		<div class="micropost-replay-space">
+			<button  data-toggle="tooltip" title="返信" class="micropost-replay-button"><i class="fa fa-reply" aria-hidden="true"></i></button>
+		</div>
+		<div class="micropost-retweet-space">
+			<button data-toggle="tooltip" title="リツイート"  class="micropost-retweet-button"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+		</div>
+		<div class="micropost-favorite-space">
+			<button data-toggle="tooltip" title="いいね" class="micropost-favorite-button"><i class="fa fa-heart" aria-hidden="true"></i></button>
+		</div>
 	</div>
 </div>'];
 
