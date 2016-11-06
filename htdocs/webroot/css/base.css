@@ -25,6 +25,14 @@ body{
 	color: #FC0F0F;
 }
 
+.each-micropost-space{
+	cursor: pointer;
+}
+.each-micropost-space:hover{
+
+	background-color: #FBF5EF;
+}
+
 .micropost-replay-button:hover{
 	color: #35CCF8;
 }
@@ -35,4 +43,16 @@ body{
 
 .micropost-retweet-button:hover{
 	color: #0AF863;
+}
+
+#micropostContentModal{
+ top: 10%;
+}
+#replayModal{
+    top: 20%;
+}
+
+.js-micropost-textarea{
+	min-height: 64px;
+	height: :200px;
 }
