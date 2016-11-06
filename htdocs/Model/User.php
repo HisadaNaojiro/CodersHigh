@@ -8,6 +8,15 @@ class User extends AppModel
 	private $__params = null;
 	private $Validate = null;
 	public $ValidationErrors = null;
+
+	public function getNameById($id)
+	{
+		$sql = "SELECT name FROM user WHERE id = ?";
+		$array = [$id];
+		$UserArray = $this->fetch($sql,$array);
+
+		return $UserArray['name'];
+	}
 	
 	public function set($params)
 	{
