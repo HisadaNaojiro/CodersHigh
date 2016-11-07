@@ -17,6 +17,13 @@ class User extends AppModel
 
 		return $UserArray['name'];
 	}
+
+	public function getArrayByName($name)
+	{
+		$sql = "SELECT * FROM user WHERE name = ?";
+		$array = [$name];
+		return  $this->fetch($sql,$array);
+	}
 	
 	public function set($params)
 	{
