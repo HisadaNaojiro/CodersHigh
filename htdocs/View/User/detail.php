@@ -4,6 +4,8 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/Model/Micropost.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/Model/Favorite.php');
 
+
+
 	$metaData = [
 		'title' => 'Home'
 	];
@@ -14,11 +16,11 @@
 	$loader->SiteSetting->setMetaData($metaData);
 	$message =!empty($loader->Session->get('message'))?$loader->Session->get('message') : '';
 	$loader->Session->remove('message');
-	$UserArray = $User->getUserArrayById($loader->Session->get('user_id'));
+	$UserArray = $User->getArrayByName($_GET['name']);
 	$maxPages = ceil($Micropost->getCount()  / 10);
 	$page = isset($_GET['page']) ? $_GET['page'] : 1;
 	$nextPage = $page + 1;
-	$MicropostCollection = $Micropost->getCollectionForPaginate($page);
+	$MicropostCollection = $Micropost->getCollectionByUserIdForPaginate($UserArray['id'],$page);
 	
 	include_once($loader->View->getLayout('header'));
 
@@ -49,10 +51,10 @@
 				<div class="user-profile col-xs-12">
 					<div></div>
 					<div class="col-xs-6 user-image">
-						<p>画像</p>
+						<p style="font-size: 80px;"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></p>
 					</div>
 					<div class="col-xs-6 user-name">
-						<p><?php echo $UserArray['name']; ?></p>
+						<p  style="font-size: 20px;"><?php echo $UserArray['name']; ?></p>
 					</div>
 				</div>
 				<div class="user-info-link col-xs-12">
@@ -60,19 +62,6 @@
 				</div>
 			</div>
 			<div id="micropost" class="col-xs-8 col-xs-offset-1">
-				
-				<div class="micropost-form-space bg-warning">
-					<form action="" method="POST" class="form-inline">
-						<div class="micropost-form-image col-xs-2">画像</div>
-						<div class="input-group col-xs-10">
-							<input  id="js-micropost-text-form" type="text" placeholder="つぶやく" class="form-control">
-							<textarea  class="form-control js-micropost-textarea" placeholder="つぶやく" rows="5" style="display: none"></textarea>
-						</div> 
-						<div id="micropost-form-bottom" class="text-right" style="display: none">
-							<button type="button" class="submit-micropost btn btn-warning" disabled="true" >投稿</button>
-						</div>
-					</form>
-				</div>
 					
 				<div id="ovarall-micropost-space">
 					<div class="each-paginate-micropost-space">

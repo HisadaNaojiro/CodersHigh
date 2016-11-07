@@ -26,6 +26,17 @@ class Micropost extends AppModel
 		return $this->fetchAll($sql);
 	}
 
+	public function getCollectionByUserIdForPaginate($userId,$page)
+	{
+		$offset = ($page - 1) * 10;
+
+		$sql = "SELECT * FROM micropost WHERE user_id = ? AND valid = 1 ORDER BY created DESC LIMIT {$offset} , 10";
+
+		$array = [$userId];
+
+		return $this->fetchAll($sql,$array);
+	}
+
 	public function getCount()
 	{
 		$sql = "SELECT COUNT(*) as micropost_count FROM micropost WHERE valid = 1";
