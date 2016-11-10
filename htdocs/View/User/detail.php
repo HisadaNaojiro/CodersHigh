@@ -3,6 +3,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/Model/User.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/Model/Micropost.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/Model/Favorite.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/Model/Follow.php');
 
 
 
@@ -13,10 +14,12 @@
 	$User = new User;
 	$Micropost = new Micropost;
 	$Favorite = new Favorite;
+	$Follow = new Follow;
 	$loader->SiteSetting->setMetaData($metaData);
 	$message =!empty($loader->Session->get('message'))?$loader->Session->get('message') : '';
 	$loader->Session->remove('message');
 	$UserArray = $User->getArrayByName($_GET['name']);
+	$currentUserId  = $loader->Session->get('user_id');
 	$maxPages = ceil($Micropost->getCount()  / 10);
 	$page = isset($_GET['page']) ? $_GET['page'] : 1;
 	$nextPage = $page + 1;
@@ -27,11 +30,13 @@
 	
 ?>
 <body>
+
 <div id="js-micropost-provider" 
 	data-micropost-post-url="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/View/Ajax/post_micropost.php';?>" 
 	data-favorite-post-url="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/View/Ajax/post_favorite.php';?>"
 	data-replay-post-url="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/View/Ajax/post_replay.php';?>"
 	data-replay-get-url="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/View/Ajax/get_replay.php';?>"
+	data-follow-post-url="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/View/Ajax/post_follow.php';?>"
 	data-micropost-detail-url="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/View/User/detail.php';?>"
 ></div>
 <?php 
@@ -60,6 +65,18 @@
 				<div class="user-info-link col-xs-12">
 					<span>ツイート</span><span>フォロー</span><span>フォロワー</span>
 				</div>
+				<?php if($currentUserId != $UserArray['id']): ?>
+					<div id="follow-space" data-user-id="<?php echo $UserArray['id']?>">
+						<?php $isFollow = $Follow->isFollow($currentUserId , $UserArray['id']); ?>
+						<button  data-type="follow" class="btn btn-warning btn-block js-follow-button follow" <?php if($isFollow){ echo 'style ="display: none;"';} ?> >
+							フォロー
+						</button>
+					
+						<button data-type="unfollow" class="btn btn-default btn-block js-follow-button unfollow" <?php if(!$isFollow){ echo 'style ="display: none;"';} ?>>
+							アンフォロー
+						</button>
+					</div>
+				<?php endif; ?>
 			</div>
 			<div id="micropost" class="col-xs-8 col-xs-offset-1">
 					

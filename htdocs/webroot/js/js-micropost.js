@@ -134,7 +134,7 @@ $(function(){
 			'data' 		: data,
 			'dataType'	:'json'
 		}).done(function(data){
-			$('.alerinfo').remove();
+			$('.alert-info').remove();
 			$('body').find('.row').prepend('<div class="alert alert-info" role="alert">メッセーシを返信しました</div>');
 		}).fail(function(a,b,c){
 			alert('返信に失敗しました');
@@ -174,6 +174,25 @@ $(function(){
 		});
 		
 	});
+
+	//follow/unfollow
+	$('.js-follow-button').on('click',function(e){
+		$event = $(e.target);
+		type = $event.data('type');
+		value = $event.parent().data('userId');
+		data = {"data[Follow][followed_id]" : value , "type" : type};
+		$.ajax({
+			'type'		: 'POST',
+			'url'		: $dataMicropostProvider.data('followPostUrl'),
+			'data' 		: data,
+			'dataType'	:'json'
+		}).done(function(data){
+			$('.js-follow-button').toggle();
+		}).fail(function(a,b,c){
+			alert('返信に失敗しました');
+		});
+	});
+
 
 	
 });
