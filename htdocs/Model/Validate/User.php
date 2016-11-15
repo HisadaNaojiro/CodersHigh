@@ -32,8 +32,8 @@ class UserValidate extends Validate
 				($this->confirmation($this->__params['User']['password'],$this->__params['User']['passwordConfirmation']))? '' : 'パスワードが一致しません';
 		}
 
-		$result = array_filter($this->__errors);
-		if(empty($result)){
+		$result = array_filter($this->__errors['errors'],'array_filter');
+		if(!empty($result)){
 			return $this->__errors;
 		}
 
@@ -52,11 +52,15 @@ class UserValidate extends Validate
 		$result['User']['email'] = 
 			($this->presence($value['User']['email']))? '' : 'メールアドレスを入力してください'; 
 		$result['User']['emailConfirmation'] = 
-			($this->presence($value['User']['emailConfirmation']))? '' : '確認用メールアドレスを入力してください'; 
-		$result['User']['password']	= 
-			($this->presence($value['User']['password']))? '' : 'パスワードを入力してください';
-		$result['User']['passwordConfirmation']	= 
-			($this->presence($value['User']['passwordConfirmation'])) ? '' : '確認用パスワードを入力してください';
+			($this->presence($value['User']['emailConfirmation']))? '' : '確認用メールアドレスを入力してください';
+		if(isset($value['User']['password'])){
+			$result['User']['password']	= 
+				($this->presence($value['User']['password']))? '' : 'パスワードを入力してください';
+		}
+		if(isset($value['User']['passwordConfirmation'])){
+			$result['User']['passwordConfirmation']	= 
+				($this->presence($value['User']['passwordConfirmation'])) ? '' : '確認用パスワードを入力してください';
+		}
 
 
 		if(!empty($result)){

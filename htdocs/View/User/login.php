@@ -23,7 +23,7 @@
 	}
 	$loader->SiteSetting->setMetaData($metaData);
 	include_once($loader->View->getLayout('header'));
-	include_once($loader->View->getElement('nav'));
+
 ?>
 
 <div class="container">
