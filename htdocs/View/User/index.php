@@ -14,7 +14,7 @@
 	$loader->SiteSetting->setMetaData($metaData);
 	$message =!empty($loader->Session->get('message'))?$loader->Session->get('message') : '';
 	$loader->Session->remove('message');
-	$UserArray = $User->getUserArrayById($loader->Session->get('user_id'));
+	$UserArray = $User->getArrayById($loader->Session->get('user_id'));
 	$maxPages = ceil($Micropost->getCount()  / 10);
 	$page = isset($_GET['page']) ? $_GET['page'] : 1;
 	$nextPage = $page + 1;

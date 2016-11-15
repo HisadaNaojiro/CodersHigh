@@ -42,17 +42,17 @@ class User extends AppModel
 		return true;
 	}
 
-	public function getUserArrayById($id)
+	public function getArrayById($id)
 	{
 		$sql = "SELECT * FROM user WHERE id = ?";
 		$array = [$id];
 		return $this->fetch($sql,$array);
 	}
 
-	public function save($params)
+	public function save()
 	{
 		$sql = "INSERT INTO user(name,email,password,created,modified) VALUES (?,?,?,?,?)";
-
+		$params = $this__params;
 		$array = [
 			$params['User']['name'],$params['User']['email'],
 			password_hash($params['User']['password'],PASSWORD_DEFAULT),
@@ -60,6 +60,28 @@ class User extends AppModel
 		];
 
 		return $this->insert($sql,$array);
+	}
+
+	public function update()
+	{
+		
+		$params = $this->__params;
+		if(isset($params['User']['password'])){ 
+			$sql ="UPDATE user SET name = ?, email = ? ,password = ? ,modified = ? WHERE id = ?";
+			$array = [
+				$params['User']['name'],$params['User']['email'],
+				password_hash($params['User']['password'],PASSWORD_DEFAULT),
+				$this->setCurrentDate(),$params['User']['id']
+			];
+		}else{
+			$sql ="UPDATE user SET name = ? ,email = ?,modified = ? WHERE id = ?";
+			$array = [
+				$params['User']['name'],$params['User']['email'],
+				$this->setCurrentDate(),$params['User']['id']
+			];
+		}
+
+		return $this->execute($sql,$array);
 	}
 
 	public function authenticate()

@@ -43,4 +43,10 @@ class SiteSetting
 		return "http" . $_SERVER['HTTP_HOST'];
 	}
 
+	public function getUrl()
+	{
+		return "http://" . $_SERVER['HTTP_HOST'] . "/View";
+	}
+
+
 }
