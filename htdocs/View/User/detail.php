@@ -79,14 +79,13 @@
 				<?php endif; ?>
 			</div>
 			<div id="micropost" class="col-xs-8 col-xs-offset-1">
-					
 				<div id="ovarall-micropost-space">
 					<div class="each-paginate-micropost-space">
 						<?php foreach($MicropostCollection as $MicropostArray): ?>
-							<div data-toggle="modal"  data-micropost-id="<?php echo $MicropostArray['id']?>" class="each-micropost-space" data-recipient="<?php echo $UserArray['name']; ?>">
+							<div data-toggle="modal"  data-micropost-id="<?php echo $MicropostArray['id']?>" class="each-micropost-space" data-recipient="<?php echo $UserArray['name']; ?>" data-user-id="<?php echo $UserArray['id']; ?>">
 								<div class="micropost-content-space">
 									<div class="micropost-user-info">
-										<p><span>画像</span><?php echo $UserArray['name']; ?></p>
+										<p><span class="glyphicon glyphicon-user" aria-hidden="true"></span><?php echo $UserArray['name']; ?></p>
 									</div>
 									<div class="micropost-content" >
 										<p>
@@ -102,7 +101,7 @@
 										<button data-toggle="tooltip" title="リツイート"  class="micropost-retweet-button"><i class="fa fa-exchange" aria-hidden="true"></i></button>
 									</div> -->
 									<div class="micropost-favorite-space">
-										<?php $checkFavorite = $Favorite->isFavoriteByUserId($MicropostArray['id'],$UserArray['id']); ?>
+										<?php $checkFavorite = $Favorite->isFavoriteByMicropostIdAndUserId($MicropostArray['id'],$UserArray['id']); ?>
 										<button data-toggle="tooltip" data-target="#replayModal" data-type="add" title="いいね" class="micropost-favorite-button" 
 											<?php if($checkFavorite){ echo 'style ="display: none;"';} ?>
 										>
@@ -120,7 +119,9 @@
 						<?php endforeach; ?>
 						<div class="test-scroll">
 							<?php if($page != $maxPages): ?>
-								<a href="?page=<?php echo $nextPage; ?>" >次のページ</a>
+								<a href="<?php echo $loader->SiteSetting->getUrl() . '/User/detail.php?name=' . $UserArray['name'] . '&page=' . $nextPage; ?>">
+									次のページ
+								</a>
 							<?php endif; ?>
 						</div>
 					</div>

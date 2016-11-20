@@ -3,6 +3,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/Model/User.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/Model/Micropost.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/Model/Favorite.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/Model/Replay.php');
 
 	$metaData = [
 		'title' => 'Home'
@@ -11,6 +12,7 @@
 	$User = new User;
 	$Micropost = new Micropost;
 	$Favorite = new Favorite;
+	$Replay = new Replay;
 	$loader->SiteSetting->setMetaData($metaData);
 	$message =!empty($loader->Session->get('message'))?$loader->Session->get('message') : '';
 	$loader->Session->remove('message');
@@ -18,7 +20,7 @@
 	$maxPages = ceil($Micropost->getCount()  / 10);
 	$page = isset($_GET['page']) ? $_GET['page'] : 1;
 	$nextPage = $page + 1;
-	$MicropostCollection = $Micropost->getCollectionForPaginate($page);
+	$MicropostCollection = $Micropost->getCollectionForPaginate($UserArray['id'],$page);
 	
 	include_once($loader->View->getLayout('header'));
 
@@ -77,14 +79,14 @@
 				<div id="ovarall-micropost-space">
 					<div class="each-paginate-micropost-space">
 						<?php foreach($MicropostCollection as $MicropostArray): ?>
-							<div data-toggle="modal"  data-micropost-id="<?php echo $MicropostArray['id']?>" class="each-micropost-space" data-recipient="<?php echo $UserArray['name']; ?>">
+							<div data-toggle="modal"  data-micropost-id="<?php echo $MicropostArray['m_id']?>" class="each-micropost-space" data-recipient="<?php echo $MicropostArray['u_name']; ?>" data-user-id="<?php echo $MicropostArray['m_user_id']; ?>">
 								<div class="micropost-content-space">
 									<div class="micropost-user-info">
-										<p><span>画像</span><?php echo $UserArray['name']; ?></p>
+										<p><span class="glyphicon glyphicon-user" aria-hidden="true"></span><?php echo $MicropostArray['u_name']; ?></p>
 									</div>
 									<div class="micropost-content" >
 										<p>
-											<?php echo $loader->View->h($MicropostArray['content']); ?>
+											<?php echo $loader->View->h($MicropostArray['m_content']); ?>
 										</p>
 									</div>
 								</div>
@@ -96,7 +98,7 @@
 										<button data-toggle="tooltip" title="リツイート"  class="micropost-retweet-button"><i class="fa fa-exchange" aria-hidden="true"></i></button>
 									</div> -->
 									<div class="micropost-favorite-space">
-										<?php $checkFavorite = $Favorite->isFavoriteByUserId($MicropostArray['id'],$UserArray['id']); ?>
+										<?php $checkFavorite = $Favorite->isFavoriteByMicropostIdAndUserId($MicropostArray['m_id'],$MicropostArray['m_user_id']); ?>
 										<button data-toggle="tooltip" data-target="#replayModal" data-type="add" title="いいね" class="micropost-favorite-button" 
 											<?php if($checkFavorite){ echo 'style ="display: none;"';} ?>
 										>
@@ -107,7 +109,7 @@
 										>
 											<i class="fa fa-heart" aria-hidden="true"></i>
 										</button>
-										<span class="favorite-count"><?php echo $Favorite->getCountByMicropostId($MicropostArray['id']);?></span>
+										<span class="favorite-count"><?php echo $Favorite->getCountByMicropostId($MicropostArray['m_id']);?></span>
 									</div>
 								</div>
 							</div>

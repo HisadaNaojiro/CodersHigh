@@ -19,17 +19,34 @@ class Favorite extends AppModel
 		return $FavoriteArray['micropost_id'];
 	}
 
-	public function isFavoriteByUserId($MicropostId,$userId)
+
+	public function isFavoriteByMicropostIdAndUserId($micropostId,$userId)
 	{	
 		$sql = "SELECT * FROM favorite WHERE micropost_id = ? AND user_id = ? AND valid = 1";
-		$array = [$MicropostId,$userId];
+		$array = [$micropostId,$userId];
+		$FavoriteArray = $this->fetch($sql,$array);
+		return (!empty($FavoriteArray))? true : false;
+	}
+
+	public function isFavoriteByReplayIdAndUserId($replayId,$userId)
+	{	
+		$sql = "SELECT * FROM favorite WHERE replay_id = ? AND user_id = ? AND valid = 1";
+		$array = [$replayId,$userId];
 		$FavoriteArray = $this->fetch($sql,$array);
 		return (!empty($FavoriteArray))? true : false;
 	}
 
 	public function getCountByMicropostId($id)
 	{
-		$sql = "SELECT COUNT(*) as favorite_count FROM favorite WHERE micropost_id = ?";
+		$sql = "SELECT COUNT(*) as favorite_count FROM favorite WHERE micropost_id = ? AND valid = 1";
+		$array = [$id];
+		$FavoriteCount = $this->fetch($sql,$array);
+		return ($FavoriteCount['favorite_count'] > 0) ? $FavoriteCount['favorite_count'] : '' ;
+	}
+
+	public function getCountByReplayId($id)
+	{
+		$sql = "SELECT COUNT(*) as favorite_count FROM favorite WHERE replay_id = ? AND valid = 1";
 		$array = [$id];
 		$FavoriteCount = $this->fetch($sql,$array);
 		return ($FavoriteCount['favorite_count'] > 0) ? $FavoriteCount['favorite_count'] : '' ;
@@ -37,13 +54,24 @@ class Favorite extends AppModel
 
 	public function save()
 	{
-		$sql = "INSERT INTO favorite(micropost_id,user_id,created,modified) VALUES (?,?,?,?)";
 		$params = $this->__params;
 
-		$array = [
-			$params['Favorite']['micropost_id'],$params['Favorite']['user_id'],
-			$this->setCurrentDate(),$this->setCurrentDate()
-		];
+		if(!empty($params['Favorite']['micropost_id'])){
+			$sql = "INSERT INTO favorite(micropost_id,user_id,other_user_id,created,modified) VALUES (?,?,?,?,?)";
+
+			$array = [
+				$params['Favorite']['micropost_id'],$params['Favorite']['user_id'],$params['Favorite']['other_user_id'],
+				$this->setCurrentDate(),$this->setCurrentDate()
+			];
+		}else{
+			$sql = "INSERT INTO favorite(replay_id,user_id,other_user_id,created,modified) VALUES (?,?,?,?,?)";
+
+			$array = [
+				$params['Favorite']['replay_id'],$params['Favorite']['user_id'],$params['Favorite']['other_user_id'],
+				$this->setCurrentDate(),$this->setCurrentDate()
+			];
+		}
+		
 
 		return $this->insert($sql,$array);
 	}
@@ -51,8 +79,19 @@ class Favorite extends AppModel
 	public function delete()
 	{
 		$params = $this->__params;
-		$sql = "DELETE FROM favorite WHERE micropost_id = ?  AND user_id = ?";
-		$array = [$params['Favorite']['micropost_id'],$params['Favorite']['user_id']];
+		if(!empty($params['Favorite']['micropost_id'])){
+
+			$sql = "DELETE FROM favorite WHERE micropost_id = ?  AND user_id = ?";
+			$array = [
+				$params['Favorite']['micropost_id'],$params['Favorite']['user_id']
+			];
+		}else{
+			$sql = "DELETE FROM favorite WHERE replay_id = ?  AND user_id = ?";
+			$array = [
+				$params['Favorite']['replay_id'],$params['Favorite']['user_id']
+			];
+		}
+		
 		return $this->execute($sql,$array);
 
 	}

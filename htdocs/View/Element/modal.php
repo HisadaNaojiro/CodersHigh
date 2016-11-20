@@ -15,7 +15,7 @@
 					
 				</div>
 				<div id="micropost-form-bottom" class="text-right" >
-					<button　data-dismiss="modal" type="button" class="btn btn-warning submit-replay">返信</button>
+					<button type="button" class="btn btn-warning submit-replay" data-dismiss="modal" >返信</button>
 				</div>
 			</div>
 		</div>
@@ -27,7 +27,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div data-micropost-id="" class="modal-header modal-micropost-space">
-				
+
 			</div>
 			<div class="modal-body bg-warning">
 				<div  class="text-left form-control js-micropost-replay"  contenteditable="true">
@@ -35,7 +35,7 @@
 				</div>
 				
 				<div id="micropost-form-bottom" class="text-right" >
-					<button　data-dismiss="modal" type="button" class="btn btn-warning submit-replay">返信</button>
+					<button type="button" class="btn btn-warning submit-replay" data-dismiss="modal" >返信</button>
 				</div>
 			</div>
 		</div>
