@@ -10,7 +10,7 @@ $Micropost = new Micropost;
 
 $formData = $_POST;
 $formData['data']['Micropost']['user_id'] = $loader->Session->get('user_id');
-$UserArray = $User->getUserArrayById($loader->Session->get('user_id'));
+$UserArray = $User->getArrayById($loader->Session->get('user_id'));
 $Micropost->set($formData['data']);
 
 
