@@ -51,7 +51,7 @@
 ?>
 	<div class="container">
 		<div class="row">
-			<div id="micropost" class="col-xs-10 col-xs-offset-1">
+			<div id="micropost" class="col-md-10 col-md-offset-1">
 				<?php if(!empty($NoticeCollection )): ?>
 					<div id="ovarall-micropost-space">
 						<div class="each-paginate-micropost-space">
