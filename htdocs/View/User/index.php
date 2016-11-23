@@ -47,21 +47,35 @@
 			<?php if(!empty($message)): ?>
 				<div class="alert alert-info" role="alert"><?php echo $message; ?></div>
 			<?php endif; ?>
-			<div id="user-info" class="col-xs-3">
+			<div id="user-info" class="col-md-3">
 				<div class="user-profile col-xs-12">
 					<div></div>
 					<div class="col-xs-6 user-image">
-						<p>画像</p>
+						<p style="font-size: 80px;"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></p>
 					</div>
 					<div class="col-xs-6 user-name">
 						<p><?php echo $UserArray['name']; ?></p>
 					</div>
 				</div>
 				<div class="user-info-link col-xs-12">
-					<span>ツイート</span><span>フォロー</span><span>フォロワー</span>
+					<span class="col-xs-4">
+						<a href="<?php echo $loader->SiteSetting->getUrl() . '/User/detail.php?name=' . $UserArray['name']; ?>">
+							ツイート
+						</a>
+					</span>
+					<span class="col-xs-4">
+						<a href="<?php echo $loader->SiteSetting->getUrl() . '/User/follow.php?name=' . $UserArray['name']; ?>">
+							フォロー
+						</a>
+					</span>
+					<span class="col-xs-4">
+						<a href="<?php echo $loader->SiteSetting->getUrl() . '/User/followed.php?name=' . $UserArray['name']; ?>">
+							フォロワー
+						</a>
+					</span>
 				</div>
 			</div>
-			<div id="micropost" class="col-xs-8 col-xs-offset-1">
+			<div id="micropost" class="col-md-8 col-md-offset-1">
 				
 				<div class="micropost-form-space bg-warning">
 					<form action="" method="POST" class="form-inline">
@@ -75,11 +89,10 @@
 						</div>
 					</form>
 				</div>
-					
 				<div id="ovarall-micropost-space">
 					<div class="each-paginate-micropost-space">
 						<?php foreach($MicropostCollection as $MicropostArray): ?>
-							<div data-toggle="modal"  data-micropost-id="<?php echo $MicropostArray['m_id']?>" class="each-micropost-space" data-recipient="<?php echo $MicropostArray['u_name']; ?>" data-user-id="<?php echo $MicropostArray['m_user_id']; ?>">
+							<div data-toggle="modal"  data-micropost-id="<?php echo $MicropostArray['m_id']?>" class="each-micropost-space each-micropost-border" data-recipient="<?php echo $MicropostArray['u_name']; ?>" data-user-id="<?php echo $MicropostArray['m_user_id']; ?>">
 								<div class="micropost-content-space">
 									<div class="micropost-user-info">
 										<p><span class="glyphicon glyphicon-user" aria-hidden="true"></span><?php echo $MicropostArray['u_name']; ?></p>

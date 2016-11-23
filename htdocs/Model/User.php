@@ -24,6 +24,28 @@ class User extends AppModel
 		$array = [$name];
 		return  $this->fetch($sql,$array);
 	}
+
+	public function getCollectionByFollowId($id)
+	{
+		$sql = "SELECT u_f.* FROM user as u INNER JOIN follow as f ON u.id = f.follow_id
+				INNER JOIN user as u_f ON f.followed_id = u_f.id WHERE u.id = ? AND u_f.valid = 1";
+		//SELECT * FROM user WHERE id IN (SELECT followed_id FROM follow WHERE follow_id = ?);
+
+		$array = [$id];
+
+		return $this->fetchAll($sql,$array);
+	}
+
+	public function getCollectionByFollowedId($id)
+	{
+		$sql = "SELECT u_f.* FROM user as u INNER JOIN follow as f ON u.id = f.followed_id
+			INNER JOIN user as u_f ON f.follow_id = u_f.id WHERE u.id = ? AND u_f.valid = 1";
+		//SELECT * FROM user WHERE id IN (SELECT followed_id FROM follow WHERE followed_id = ?);
+
+		$array = [$id];
+
+		return $this->fetchAll($sql,$array);	
+	}
 	
 	public function set($params)
 	{
@@ -51,8 +73,8 @@ class User extends AppModel
 
 	public function save()
 	{
+		$params = $this->__params;
 		$sql = "INSERT INTO user(name,email,password,created,modified) VALUES (?,?,?,?,?)";
-		$params = $this__params;
 		$array = [
 			$params['User']['name'],$params['User']['email'],
 			password_hash($params['User']['password'],PASSWORD_DEFAULT),

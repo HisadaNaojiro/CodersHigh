@@ -1,3 +1,25 @@
+
+
+
+<div class="modal fade" id="micropostContentModal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div data-micropost-id="" class="modal-header modal-micropost-space">
+
+			</div>
+			<div class="modal-body bg-warning">
+				<div  class="text-left form-control js-micropost-replay"  contenteditable="true">
+					
+				</div>
+				
+				<div id="micropost-form-bottom" class="text-right" >
+					<button type="button" class="btn btn-warning submit-replay" data-dismiss="modal" >返信</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="modal" id="replayModal" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -14,26 +36,6 @@
 				<div  class="text-left form-control js-micropost-replay" contenteditable="true">
 					
 				</div>
-				<div id="micropost-form-bottom" class="text-right" >
-					<button type="button" class="btn btn-warning submit-replay" data-dismiss="modal" >返信</button>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<div class="modal fade" id="micropostContentModal" tabindex="-1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div data-micropost-id="" class="modal-header modal-micropost-space">
-
-			</div>
-			<div class="modal-body bg-warning">
-				<div  class="text-left form-control js-micropost-replay"  contenteditable="true">
-					
-				</div>
-				
 				<div id="micropost-form-bottom" class="text-right" >
 					<button type="button" class="btn btn-warning submit-replay" data-dismiss="modal" >返信</button>
 				</div>

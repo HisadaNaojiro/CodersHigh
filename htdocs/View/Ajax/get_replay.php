@@ -15,7 +15,7 @@ $micropostId = !empty($_GET['replay_id'])?  $Replay->getMicropostIdById($_GET['r
 $MicropostArray = $Micropost->getArrayById($micropostId);
 	$uesrName = $User->getNameById($MicropostArray['user_id']);
 	$array['Micropost'] = 
-		getDataAttribution('micropost',$MicropostArray['id'] ) . 
+		getDataAttribution($MicropostArray['id'],null,$MicropostArray['user_id'],$uesrName) . 
 		formatContentSpace($uesrName , $MicropostArray['content']) .
 		formatButtonSpace('micropost',$MicropostArray['id'],$MicropostArray['user_id'],$uesrName) . '</div>';
 
@@ -29,7 +29,7 @@ if(!$ReplayCollection = $Replay->getCollectionByMicropostId($micropostId)){
 	foreach($ReplayCollection as $ReplayArray){
 		$userName = $User->getNameById($ReplayArray['other_user_id']);
 		$array['Replay'][] = 
-			getDataAttribution('replay',$ReplayArray['id'] ) . 
+			getDataAttribution($ReplayArray['micropost_id'],$ReplayArray['id'],$ReplayArray['user_id'],$userName) . 
 			formatContentSpace($userName , $ReplayArray['content']) .
 			formatButtonSpace('replay',$ReplayArray['id'],$ReplayArray['other_user_id'],$uesrName) . '</div>';
 	}
@@ -38,9 +38,9 @@ if(!$ReplayCollection = $Replay->getCollectionByMicropostId($micropostId)){
 $loader->Response->setResponseCode('200');
 echo json_encode($array);
 
-function getDataAttribution($type,$id)
+function getDataAttribution($micropostId,$replayId = null,$userId,$userName)
 {
-	return "<div data-{$type}-id='{$id}'>";
+	return "<div class='each-micropost-space' data-micropost-id='{$micropostId}' data-replay-id='{$replayId}' data-user-id='{$userId}' data-recipient='{$userName}'>";
 }
 
 function formatContentSpace($name , $content)
@@ -66,13 +66,15 @@ function formatButtonSpace($type,$id,$userId,$userName)
 		$favoriteCount = $Favorite->getCountByReplayId($id);
 	}
 
+	$replayButtonClass = ($type == 'micropost')? 'micropost-replay-button' : 'micropost-replay-focus-button' ;
+
 	$favorite = ($checkFavorite)? 'style ="display: none;"' : '' ;
 	$unfavorite = (!$checkFavorite)? 'style ="display: none;"' : '' ;
 
 	return "
 	<div class='micropost-content-button'>
 		<div class='micropost-replay-space'>
-			<button  data-toggle='tooltip' title='返信' class='micropost-replay-button' data-recipient='{$userName}'><i class='fa fa-reply' aria-hidden='true'></i></button>
+			<button  data-toggle='tooltip' title='返信' class='{$replayButtonClass}' data-recipient='{$userName}'><i class='fa fa-reply' aria-hidden='true'></i></button>
 		</div>
 		<!-- <div class='micropost-retweet-space'>
 			<button data-toggle='tooltip' title='リツイート'  class='micropost-retweet-button'><i class='fa fa-exchange' aria-hidden='true'></i></button>

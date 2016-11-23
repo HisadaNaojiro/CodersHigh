@@ -52,7 +52,7 @@
 			<?php if(!empty($message)): ?>
 				<div class="alert alert-info" role="alert"><?php echo $message; ?></div>
 			<?php endif; ?>
-			<div id="user-info" class="col-xs-3">
+			<div id="user-info" class="col-md-3">
 				<div class="user-profile col-xs-12">
 					<div></div>
 					<div class="col-xs-6 user-image">
@@ -63,7 +63,21 @@
 					</div>
 				</div>
 				<div class="user-info-link col-xs-12">
-					<span>ツイート</span><span>フォロー</span><span>フォロワー</span>
+					<span class="col-xs-4">
+						<a href="<?php echo $loader->SiteSetting->getUrl() . '/User/detail.php?name=' . $UserArray['name']; ?>">
+							ツイート
+						</a>
+					</span>
+					<span class="col-xs-4">
+						<a href="<?php echo $loader->SiteSetting->getUrl() . '/User/follow.php?name=' . $UserArray['name']; ?>">
+							フォロー
+						</a>
+					</span>
+					<span class="col-xs-4">
+						<a href="<?php echo $loader->SiteSetting->getUrl() . '/User/followed.php?name=' . $UserArray['name']; ?>">
+							フォロワー
+						</a>
+					</span>
 				</div>
 				<?php if($currentUserId != $UserArray['id']): ?>
 					<div id="follow-space" data-user-id="<?php echo $UserArray['id']?>">
@@ -78,11 +92,11 @@
 					</div>
 				<?php endif; ?>
 			</div>
-			<div id="micropost" class="col-xs-8 col-xs-offset-1">
+			<div id="micropost" class="col-md-8 col-md-offset-1">
 				<div id="ovarall-micropost-space">
 					<div class="each-paginate-micropost-space">
 						<?php foreach($MicropostCollection as $MicropostArray): ?>
-							<div data-toggle="modal"  data-micropost-id="<?php echo $MicropostArray['id']?>" class="each-micropost-space" data-recipient="<?php echo $UserArray['name']; ?>" data-user-id="<?php echo $UserArray['id']; ?>">
+							<div data-toggle="modal"  data-micropost-id="<?php echo $MicropostArray['id']?>" class="each-micropost-space each-micropost-border" data-recipient="<?php echo $UserArray['name']; ?>" data-user-id="<?php echo $UserArray['id']; ?>">
 								<div class="micropost-content-space">
 									<div class="micropost-user-info">
 										<p><span class="glyphicon glyphicon-user" aria-hidden="true"></span><?php echo $UserArray['name']; ?></p>
