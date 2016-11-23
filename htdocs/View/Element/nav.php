@@ -11,12 +11,12 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active">
+            <li <?php echo ($_SERVER ["SCRIPT_NAME"]  === "/View/User/index.php")? 'class="active"' : ''; ?> >
               <a href="<?php echo $loader->SiteSetting->getUrl(); ?>/User/index.php">
                 ホーム
               </a>
             </li>
-            <li>
+            <li <?php echo ($_SERVER ["SCRIPT_NAME"]  === "/View/User/notice.php")? 'class="active"' : ''; ?>>
               <a href="<?php echo $loader->SiteSetting->getUrl(); ?>/User/notice.php">
                 通知
               </a>
@@ -33,12 +33,12 @@
             <li class="dropdown ">
             <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $currentUserName ; ?><span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li>
+                <li <?php echo ($_SERVER ["SCRIPT_NAME"]  === "/View/User/detail.php")? 'class="active"' : ''; ?> >
                   <a href="<?php echo $loader->SiteSetting->getUrl() . '/User/detail.php?name='. $currentUserName; ?>">
                     詳細
                   </a>
                 </li>
-                <li>
+                <li <?php echo ($_SERVER ["SCRIPT_NAME"]  === "/View/User/edit.php")? 'class="active"' : ''; ?> >
                   <a href="<?php echo $loader->SiteSetting->getUrl() . '/User/edit.php'?>">
                     プロフィール編集
                   </a>

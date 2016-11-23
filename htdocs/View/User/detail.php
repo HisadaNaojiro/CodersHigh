@@ -64,9 +64,7 @@
 				</div>
 				<div class="user-info-link col-xs-12">
 					<span class="col-xs-4">
-						<a href="<?php echo $loader->SiteSetting->getUrl() . '/User/detail.php?name=' . $UserArray['name']; ?>">
-							ツイート
-						</a>
+						ツイート
 					</span>
 					<span class="col-xs-4">
 						<a href="<?php echo $loader->SiteSetting->getUrl() . '/User/follow.php?name=' . $UserArray['name']; ?>">
