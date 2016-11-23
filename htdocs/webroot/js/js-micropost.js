@@ -11,6 +11,7 @@ $(function(){
 		toggleMicropostForm();
 	});
 	
+	//入力フォームの拡大
 	$(document).on('click', function(e) {
 	  if (
 	  		!$(e.target).closest('.micropost-form-space').length && 
@@ -43,8 +44,14 @@ $(function(){
 		});
 	});
 
+	//いいねtooltip表示
+	$(document).on('mouseover' ,'.micropost-favorite-button,.delete-micropost-favorite-button',function(e){
+		$(e.target).tooltip('show');
+	});
+
+
 	//いいね追加
-	$('.micropost-favorite-button,.delete-micropost-favorite-button').on('click',function(e){
+	$(document).on('click','.micropost-favorite-button,.delete-micropost-favorite-button',function(e){
 		$event = $(e.target);
 		$micropostSpace = $event.parents('.each-micropost-space');
 		var data = {
@@ -69,6 +76,7 @@ $(function(){
 		e.stopPropagation();
 	});
 
+	//ツイート入力フォームの拡大メソッド
 	function toggleMicropostForm()
 	{
 		$jsMicropostTextForm.toggle();
@@ -76,6 +84,7 @@ $(function(){
 		$jsMicropostFormButton.toggle();
 	}
 
+	//いいねボタンの切り替え
 	function toggleFavoriteButton()
 	{
 		$('.micropost-favorite-button').toggle();
@@ -83,17 +92,23 @@ $(function(){
 
 	}
 
+	//無限スクロール
 	$('#ovarall-micropost-space').jscroll({
 		nextSelector : '.test-scroll a',
 		contentSelector : '.each-paginate-micropost-space',
 		loadingHtml: '<div id="loading-data" class="text-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></div>'
 	});
 
-	$('[data-toggle="tooltip"]').tooltip();
+	//返信tooltip表示
+	$(document).on('mouseover' ,'.micropost-replay-button,.micropost-replay-focus-button',function(e){
+		$(e.target).tooltip('show');
+	});
+	
+
 
 
 	//返信のモーダル表示
-	$('.micropost-replay-button').on('click',function(e){
+	$(document).on('click','.micropost-replay-button',function(e){
 		$event = $(e.target);
 		$modal = $('#replayModal');
 		$micropostSpace = $event.parents('.each-micropost-space');
@@ -119,6 +134,14 @@ $(function(){
 	$('.js-micropost-replay').on('keyup',function(e){
 		length = $(e.target).text().length - $jsReplayDefaultLength;
 		(length > 0 )? $jsSubmitReplay.attr('disabled',false) : $jsSubmitReplay.attr('disabled',true);
+	});
+
+	//返信ツイートの返信ボタンをクリックした際は、入力画面にフォーカスされる	
+	$(document).on('click','.micropost-replay-focus-button',function(e){
+		var $jsMicropostReplay = $(e.target).parents('.modal-content').find('.js-micropost-replay'),
+			length  = $jsMicropostReplay.val().length;
+		$jsMicropostReplay.focus();
+
 	});
 
 	//返信の追加
@@ -147,7 +170,7 @@ $(function(){
 	});
 
 	//ここのツイート表示
-	$('.each-micropost-space').on('click',function(){
+	$(document).on('click','.each-micropost-space',function(){
 		$this = $(this);
 		$modal = $('#micropostContentModal');
 		$modalMicropostSpace = $modal.find('.modal-micropost-space');
@@ -159,7 +182,6 @@ $(function(){
 		$modalMicropostSpace.attr('data-micropost-id',$this.data('micropostId'));
 		$modal.find('.modal-content').attr('data-user-id',$this.data('userId'));
 		$modalMicropostSpace.attr('data-replay-id',replayId);
-		$modalMicropostSpace.prepend('<button type="button" class="close" data-dismiss="modal"><span>×</span></button>');
 		$modal.find('.js-micropost-replay').html(html);
 		$jsSubmitReplay.attr('disabled',true)
 		$jsReplayDefaultLength = $modal.find('.js-micropost-replay').text().length;
@@ -172,6 +194,7 @@ $(function(){
 		}).done(function(data){
 			$('.modal-replay-space').remove()
 			$modalMicropostSpace.html(data['Micropost']);
+			$modalMicropostSpace.prepend('<button type="button" class="close" data-dismiss="modal"><span>×</span></button>');
 			if(data['Replay'] != 'nothing'){
 				$modal.find('.modal-content').append('<div class="modal-footer modal-replay-space">');
 				if(!replayId){
@@ -198,8 +221,9 @@ $(function(){
 	//follow/unfollow
 	$('.js-follow-button').on('click',function(e){
 		$event = $(e.target);
+		$parent = $event.parent()
 		type = $event.data('type');
-		value = $event.parent().data('userId');
+		value = $parent.data('userId');
 		data = {"data[Follow][followed_id]" : value , "type" : type};
 		$.ajax({
 			'type'		: 'POST',
@@ -207,7 +231,7 @@ $(function(){
 			'data' 		: data,
 			'dataType'	:'json'
 		}).done(function(data){
-			$('.js-follow-button').toggle();
+			$parent.find('.js-follow-button').toggle();
 		}).fail(function(a,b,c){
 			alert('返信に失敗しました');
 		});

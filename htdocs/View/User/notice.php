@@ -51,12 +51,12 @@
 ?>
 	<div class="container">
 		<div class="row">
-			<div id="micropost" class="col-xs-10 col-xs-offset-1">
+			<div id="micropost" class="col-md-10 col-md-offset-1">
 				<?php if(!empty($NoticeCollection )): ?>
 					<div id="ovarall-micropost-space">
 						<div class="each-paginate-micropost-space">
 							<?php foreach($NoticeCollection as $NoticeArray): ?>
-								<div data-toggle="modal" data-replay-id="<?php echo $NoticeArray['replay_id']; ?>"  data-micropost-id="<?php echo $NoticeArray['micropost_id']?>" class="each-micropost-space" data-recipient="<?php echo $User->getNameById($NoticeArray['other_user_id']); ?>" data-user-id="<?php echo $NoticeArray['other_user_id'];?>">
+								<div data-toggle="modal" data-replay-id="<?php echo $NoticeArray['replay_id']; ?>"  data-micropost-id="<?php echo $NoticeArray['micropost_id']?>" class="each-micropost-space each-micropost-border" data-recipient="<?php echo $User->getNameById($NoticeArray['other_user_id']); ?>" data-user-id="<?php echo $NoticeArray['other_user_id'];?>">
 									<div class="micropost-content-space">
 										<div class="micropost-user-info">
 											<?php $center = ($NoticeArray['type'] !== 'replay')? 'class="text-center"' : ''; ?>

@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Demo Twitter</a>
+          <a class="navbar-brand" href="<?php echo $loader->SiteSetting->getUrl(); ?>/User/index.php">Demo Twitter</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">

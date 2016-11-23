@@ -37,7 +37,7 @@
 .micropost-form-button{
 	margin: 0;
 }
-.each-micropost-space{
+.each-micropost-border{
 	border-radius: 0.5em;
 	border: solid 1px #F5D0A9;
 	background-color: #fff;
@@ -62,4 +62,9 @@
 
 .user-info-link {
 	margin-bottom: 10px;
+}
+
+
+.user-info-link > span > a{
+	font-size: 0.8em;
 }

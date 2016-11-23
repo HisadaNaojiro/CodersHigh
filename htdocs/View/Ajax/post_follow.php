@@ -9,7 +9,6 @@ $loader = new Loader;
 $Follow = new Follow;
 $User = new User;
 $Notice = new Notice;
-
 $currentUerId = $loader->Session->get('user_id');
 $formData = $_POST;
 $formData['data']['Follow']['follow_id'] = $currentUerId;
@@ -24,7 +23,6 @@ $notice['Notice'] = [
 ];
 
 	$Notice->set($notice);
-
 
 if($formData['type'] === 'follow'){
 	if(!$id = $Follow->save()){
